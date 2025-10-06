@@ -1,0 +1,29 @@
+from moviepy.editor import *
+from moviepy.video.fx import fadein, fadeout
+
+# Load your image
+image_path = "Snapchat-1970757643.jpg"  # Make sure this is in your current folder
+output_path = "chetan_black_ride_video.mp4"
+
+# Create image clip with zoom-in effect
+clip_duration = 10  # seconds
+image_clip = ImageClip(image_path).set_duration(clip_duration)
+zoomed_clip = image_clip.resize(lambda t: 1 + 0.05 * t).set_position("center")
+animated_clip = fadein(fadeout(zoomed_clip, 1), 1)
+
+# Add text "Chetan Barala"
+txt_clip = (TextClip("Chetan Barala", fontsize=50, color='white', font='Arial-Bold')
+            .set_duration(clip_duration)
+            .set_position(('center', 'bottom'))
+            .fadein(1)
+            .fadeout(1))
+
+# Combine image and text
+final_clip = CompositeVideoClip([animated_clip, txt_clip])
+
+# OPTIONAL: Add audio (if you have the "Black Ride" song as an mp3)
+# audio = AudioFileClip("black_ride.mp3").subclip(0, clip_duration)
+# final_clip = final_clip.set_audio(audio)
+
+# Export video
+final_clip.write_videofile(output_path, fps=24)
